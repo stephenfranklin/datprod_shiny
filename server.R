@@ -5,7 +5,8 @@
 # http://shiny.rstudio.com
 #
 
-library(shiny); library(caret); library(ggplot2); library(rattle)
+library(shiny); library(caret); library(rpart);
+library(randomForest); library(ggplot2); library(rattle)
 
 shinyServer(function(input, output) {
     
@@ -32,7 +33,41 @@ shinyServer(function(input, output) {
     })
     
     ### iris plot ###
-    output$irisPlot1 <- renderPlot({
+    output$iris.tree.plot1 <- renderPlot({
         qplot(Petal.Width,Sepal.Width,colour=Species,data=training)
     })
+    
+    ### train CART classification tree ###
+    iris.tree <- train(Species ~ .,method="rpart",data=training)
+    output$iris.tree.finalModel <- renderPrint({
+        (iris.tree$finalModel)
+    })
+    
+    ### tree diagram ###
+    output$iris.tree.plot2 <- renderPlot({
+        fancyRpartPlot(iris.tree$finalModel)
+    })
+    
+    ### Predict Test Set (tree) ###
+    pred1<-predict(iris.tree,newdata=testing)
+    testing$predRight <- pred1==testing$Species
+    
+        ### Prediction Table (tree) ###
+    output$iris.tree.table <- renderTable({
+        table(pred1,testing$Species)
+    })
+    
+        ### Prediction Plot (tree) ###
+    output$iris.tree.plot3 <- renderPlot({
+        qplot(Petal.Width,Petal.Length,colour=predRight,
+              data=testing,main="newdata Predictions")
+    })
+    
+    ### train Random Forest ###
+    iris.rf <- train(Species~ .,data=training,method="rf",prox=TRUE)
+    output$iris.rf.summary <- renderPrint({
+        iris.rf
+    })
+
+    
 })

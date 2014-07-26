@@ -17,7 +17,7 @@ shinyUI(fluidPage(
         sidebarPanel(
             radioButtons("radio", label = h3("Radio buttons"),
                          choices = list("2" = 1, "10" = 10,
-                                        "slider" = 3),selected = 2),
+                                        "slider" = 3),selected = 10),
             fluidRow(verbatimTextOutput("value")),
             sliderInput("bins",
                         "Number of bins:",
@@ -30,21 +30,24 @@ shinyUI(fluidPage(
         mainPanel(
             verticalLayout(
                 plotOutput("distPlot"),
-                plotOutput("irisPlot1"),
+                plotOutput("iris.tree.plot1"),
                 sidebarPanel(width = 12,
-                HTML(fragment.only=TRUE, text=c(
-                    "This is an absolutePanel that uses `bottom` and `right` attributes.
+                             HTML(fragment.only=TRUE, text=c(
+                                 "This is an absolutePanel that uses `bottom` and `right` attributes.
 
                     It also has `draggable = TRUE`, so you can drag it to move it around the page.
                     
                     The slight transparency is due to `style = 'opacity: 0.92'`.
                     
                     You can put anything in absolutePanel, including inputs and outputs:"
-                ))),
-                
+                             ))),
+                verbatimTextOutput("iris.tree.finalModel"),
+                plotOutput("iris.tree.plot2"),
+                tableOutput("iris.tree.table"),
+                plotOutput("iris.tree.plot3"),
+                verbatimTextOutput("iris.rf.summary")
             )
         )
     )))
 
 
-    
