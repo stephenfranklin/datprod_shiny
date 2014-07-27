@@ -23,14 +23,24 @@ shinyUI(fluidPage(
                         "Number of bins:",
                         min = 1,
                         max = 50,
-                        value = 30)
+                        value = 30),
+            
+            sliderInput("train_percent",
+                        "Training Percentage:",
+                        min = 0.50, max = 0.80, 
+                        value = 0.75, step = 0.05),
+            
+            radioButtons("method", "Model method:",
+                         c("CART" = "rpart",
+                           "Random Forest" = "rf")
+            )
         ),
         
         # Show a plot of the generated distribution
         mainPanel(
             verticalLayout(
                 plotOutput("distPlot"),
-                plotOutput("iris.tree.plot1"),
+                #plotOutput("iris.tree.plot1"),
                 sidebarPanel(width = 12,
                              HTML(fragment.only=TRUE, text=c(
                                  "This is an absolutePanel that uses `bottom` and `right` attributes.
@@ -41,18 +51,25 @@ shinyUI(fluidPage(
                     
                     You can put anything in absolutePanel, including inputs and outputs:"
                              ))),
-
+                
+                tabsetPanel(type = "tabs", 
+                    tabPanel("Fit", verbatimTextOutput("fit.out")), 
+                    tabPanel("Plot", plotOutput("plot.out")), 
+                    tabPanel("Table", tableOutput("table.out")),
+                    tabPanel("Pred", plotOutput("pred.out"))#,
+                    #tabPanel("Help", verbatimTextOutput("help.out"))
+                )#,
                             
-                verbatimTextOutput("iris.tree.finalModel"),
-                plotOutput("iris.tree.plot2"),
-                tableOutput("iris.tree.table"),
-                plotOutput("iris.tree.plot3"),
-                verbatimTextOutput("iris.rf.finalModel"),
-                plotOutput("iris.rf.plot1"),
-                tableOutput("iris.rf.table"),
-                plotOutput("iris.rf.plot2")
+                #verbatimTextOutput("iris.tree.finalModel"),
+                #plotOutput("iris.tree.plot2"),
+                #tableOutput("iris.tree.table"),
+                #plotOutput("iris.tree.plot3"),
+                #verbatimTextOutput("iris.rf.finalModel"),
+                #plotOutput("iris.rf.plot1"),
+                #tableOutput("iris.rf.table"),
+                #plotOutput("iris.rf.plot2")
             )
         )
-    )))
-
+    )
+))
 
