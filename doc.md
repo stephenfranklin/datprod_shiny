@@ -1,8 +1,8 @@
-# Shiny Application
+# Comparing Machine Learning Algorithms
 ##### Stephen Franklin
 ##### Developing Data Products, Coursera, 7-27-14
 
-This interactive Shiny application performs machine learning algorithms to predict species of lillies (from the lily dataset).
+This interactive Shiny application performs machine learning algorithms to predict species of irises (from the iris dataset).
 
 The data is divided into two sets, one for training the algorithm and the other for testing it. The algorithm is run upon any change in the two user controls.
 
