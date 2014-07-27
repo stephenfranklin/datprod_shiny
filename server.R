@@ -58,16 +58,19 @@ interact <- function(train_percent, method){
     out.finalModel <- fit$finalModel
     
     out.table <- table(pred,data$testing$Species)
+    
     out.pred  <- qplot(Petal.Width,Petal.Length,
                     colour=predRight,data=data$testing,
                     main="newdata Predictions")
-    out.plot  <- if(method=="rf") plot.iris.centers(fit,data$training)
-                 else fancyRpartPlot(fit$finalModel) ## "rpart"   
-    invisible( list(out.finalModel=out.finalModel,
+    #if(method=="rf") out.plot <- plot.iris.centers(fit,data$training)
+    #else if(method=="rpart") out.plot <- fancyRpartPlot(fit$finalModel)
+    #else out.plot <- NULL
+    
+    list(out.finalModel=out.finalModel,
                     out.table=out.table,
-                    out.pred=out.pred,
-                    out.plot=out.plot)
-    )
+                    out.pred=out.pred #,
+                    #out.plot=out.plot
+         )
 }
 
 ### Server Logic ###
@@ -92,7 +95,7 @@ shinyServer(function(input, output) {
     })
     
     output$fit.out   <- renderPrint({outs()$out.finalModel})
-    output$plot.out  <- renderPlot({outs()$out.plot})
+    #output$plot.out  <- renderPlot({outs()$out.plot})
     output$table.out <- renderTable({outs()$out.table})
     output$pred.out  <- renderPlot({outs()$out.pred})   
         

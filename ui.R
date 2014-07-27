@@ -10,7 +10,7 @@ library(shiny)
 shinyUI(fluidPage(
     
     # Application title
-    titlePanel("Old Faithful Geyser Data"),
+    titlePanel("Shiny Application"),
     
     # Sidebar with a slider input for number of bins
     sidebarLayout(
@@ -27,8 +27,8 @@ shinyUI(fluidPage(
             
             sliderInput("train_percent",
                         "Training Percentage:",
-                        min = 0.50, max = 0.80, 
-                        value = 0.75, step = 0.05),
+                        min = 0.10, max = 0.90, 
+                        value = 0.20, step = 0.10),
             
             radioButtons("method", "Model method:",
                          c("CART" = "rpart",
@@ -41,23 +41,12 @@ shinyUI(fluidPage(
             verticalLayout(
                 plotOutput("distPlot"),
                 #plotOutput("iris.tree.plot1"),
-                sidebarPanel(width = 12,
-                             HTML(fragment.only=TRUE, text=c(
-                                 "This is an absolutePanel that uses `bottom` and `right` attributes.
-
-                    It also has `draggable = TRUE`, so you can drag it to move it around the page.
-                    
-                    The slight transparency is due to `style = 'opacity: 0.92'`.
-                    
-                    You can put anything in absolutePanel, including inputs and outputs:"
-                             ))),
-                
                 tabsetPanel(type = "tabs", 
                     tabPanel("Fit", verbatimTextOutput("fit.out")), 
-                    tabPanel("Plot", plotOutput("plot.out")), 
-                    tabPanel("Table", tableOutput("table.out")),
-                    tabPanel("Pred", plotOutput("pred.out"))#,
-                    #tabPanel("Help", verbatimTextOutput("help.out"))
+                    #tabPanel("Plot", plotOutput("plot.out")), 
+                    tabPanel("Prediction Table", tableOutput("table.out")),
+                    tabPanel("Prediction Plot", plotOutput("pred.out")),
+                    tabPanel("Doc", includeMarkdown("doc.md"))
                 )#,
                             
                 #verbatimTextOutput("iris.tree.finalModel"),
