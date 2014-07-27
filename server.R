@@ -6,7 +6,8 @@
 #
 
 library(shiny); library(caret); library(rpart);
-library(randomForest); library(ggplot2); library(rattle)
+library(randomForest); library(ggplot2); library(rattle);
+library(e1071); library(rpart.plot)
 
 shinyServer(function(input, output) {
     

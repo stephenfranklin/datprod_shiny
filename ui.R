@@ -41,6 +41,8 @@ shinyUI(fluidPage(
                     
                     You can put anything in absolutePanel, including inputs and outputs:"
                              ))),
+
+                            
                 verbatimTextOutput("iris.tree.finalModel"),
                 plotOutput("iris.tree.plot2"),
                 tableOutput("iris.tree.table"),
