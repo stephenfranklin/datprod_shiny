@@ -45,7 +45,10 @@ shinyUI(fluidPage(
                 plotOutput("iris.tree.plot2"),
                 tableOutput("iris.tree.table"),
                 plotOutput("iris.tree.plot3"),
-                verbatimTextOutput("iris.rf.summary")
+                verbatimTextOutput("iris.rf.finalModel"),
+                plotOutput("iris.rf.plot1"),
+                tableOutput("iris.rf.table"),
+                plotOutput("iris.rf.plot2")
             )
         )
     )))

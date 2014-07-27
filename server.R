@@ -11,6 +11,7 @@ library(randomForest); library(ggplot2); library(rattle)
 shinyServer(function(input, output) {
     
     ### Create Iris Training And Test Sets
+    set.seed(42)
     inTrain <- createDataPartition(y=iris$Species,
                                    p=0.7, list=FALSE)
     training <- iris[inTrain,]
@@ -34,13 +35,14 @@ shinyServer(function(input, output) {
     
     ### iris plot ###
     output$iris.tree.plot1 <- renderPlot({
-        qplot(Petal.Width,Sepal.Width,colour=Species,data=training)
+        qplot(Petal.Width,Petal.Length,colour=Species,data=training)
     })
     
     ### train CART classification tree ###
+    set.seed(42)
     iris.tree <- train(Species ~ .,method="rpart",data=training)
     output$iris.tree.finalModel <- renderPrint({
-        (iris.tree$finalModel)
+        iris.tree$finalModel
     })
     
     ### tree diagram ###
@@ -49,25 +51,55 @@ shinyServer(function(input, output) {
     })
     
     ### Predict Test Set (tree) ###
-    pred1<-predict(iris.tree,newdata=testing)
-    testing$predRight <- pred1==testing$Species
+    set.seed(42)
+    pred.tree<-predict(iris.tree,newdata=testing)
+    testing$predRight.tree <- pred.tree==testing$Species
     
         ### Prediction Table (tree) ###
     output$iris.tree.table <- renderTable({
-        table(pred1,testing$Species)
+        table(pred.tree,testing$Species)
     })
     
         ### Prediction Plot (tree) ###
     output$iris.tree.plot3 <- renderPlot({
-        qplot(Petal.Width,Petal.Length,colour=predRight,
+        qplot(Petal.Width,Petal.Length,colour=predRight.tree,
               data=testing,main="newdata Predictions")
     })
     
     ### train Random Forest ###
+    set.seed(42)
     iris.rf <- train(Species~ .,data=training,method="rf",prox=TRUE)
-    output$iris.rf.summary <- renderPrint({
-        iris.rf
+    output$iris.rf.finalModel <- renderPrint({
+        iris.rf$finalModel
     })
-
     
+    ### get class centers from Random Forest ###
+    irisP <- classCenter(training[,c(3,4)], training$Species, 
+                         iris.rf$finalModel$prox)  ## table of class centers
+    irisP <- as.data.frame(irisP)
+    irisP$Species <- rownames(irisP) 
+    
+    ### plot class centers (rf) ###
+    p <- qplot(Petal.Width, Petal.Length, col=Species,data=training)
+    p <- p + geom_point(aes(x=Petal.Width,y=Petal.Length,col=Species),
+                   size=5,shape=4,data=irisP)
+    output$iris.rf.plot1 <- renderPlot({
+        p
+    })
+    
+    ### Predict Test Set (rf) ###
+    set.seed(42)
+    pred.rf <- predict(iris.rf,testing) ## list of predictions of species (a factor w/ 3 levels)
+    testing$predRight.rf <- pred.rf==testing$Species
+    
+        ### Prediction Table (rf) ###
+    output$iris.rf.table <- renderTable({
+        table(pred.rf,testing$Species)
+    })
+    
+        ### Prediction Plot (rf) ###
+    output$iris.rf.plot2 <- renderPlot({
+        qplot(Petal.Width,Petal.Length,colour=predRight.rf,
+              data=testing,main="newdata Predictions")
+    })
 })
