@@ -79,21 +79,6 @@ shinyServer(function(input, output) {
     ### Reactive expression called whenever inputs change.
     outs <- reactive({interact(input$train_percent, input$method)})
     
-    ### faithful histogram ###
-#     output$distPlot <- renderPlot({
-#         
-#         # generate bins based on input$bins from ui.R
-#         x    <- faithful[, 2]
-#         if(input$radio=="3")
-#             bins <- seq(min(x), max(x), length.out = input$bins + 1)
-#         else bins <- as.numeric(input$radio)
-#         
-#         # draw the histogram with the specified number of bins
-#         hist(x, breaks = bins, col = 'darkgray', border = 'white')
-#         output$value <- renderPrint({ input$radio })
-#         
-#     })
-    
     output$fit.out   <- renderPrint({outs()$out.finalModel})
     #output$plot.out  <- renderPlot({outs()$out.plot})
     output$table.out <- renderTable({outs()$out.table})

@@ -19,19 +19,8 @@ shinyUI(fluidPage(
     # Application title
     titlePanel("Comparing Machine Learning Algorithms"),
     
-    # Sidebar with a slider input for number of bins
     sidebarLayout(
         sidebarPanel(
-#             radioButtons("radio", label = h3("Radio buttons"),
-#                          choices = list("2" = 1, "10" = 10,
-#                                         "slider" = 3),selected = 10),
-#             fluidRow(verbatimTextOutput("value")),
-#             sliderInput("bins",
-#                         "Number of bins:",
-#                         min = 1,
-#                         max = 50,
-#                         value = 30),
-            
             sliderInput("train_percent",
                         "Training Percentage:",
                         min = 0.10, max = 0.90, 
@@ -42,8 +31,7 @@ shinyUI(fluidPage(
                            "Random Forest" = "rf")
             )
         ),
-        
-        # Show a plot of the generated distribution
+
         mainPanel(
             verticalLayout(
                 #plotOutput("distPlot"),
